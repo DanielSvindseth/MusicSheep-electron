@@ -4,15 +4,15 @@ The app allows you to change the playback rate of you music as you listen.
 
 ## Installing
 To install, clone the repository and run
-'''
+```
 npm install
-'''
+```
 
 When npm has installed all dependencies, run
 
-'''
+```
 npm start
-'''
+```
 to run the application.
 
 ## Compatibility
