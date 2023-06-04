@@ -1,0 +1,63 @@
+{
+  "name": "MusicSheep",
+  "version": "0.9.0",
+  "description": "A music player",
+  "main": "main.js",
+  "repository": "",
+  "keywords": [
+    "sheep",
+    "music"
+  ],
+  "author": "Daniel Svindseth",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^23.3.4",
+    "electron-builder": "^24.1.2",
+    "electron-packager": "^17.1.1"
+  },
+  "dependencies": {
+    "browser-window": "^0.4.0",
+    "dmg": "^0.1.0",
+    "electron-context-menu": "^2.0.1",
+    "exiftool-vendored": "^22.0.0",
+    "fs-extra": "^9.0.1",
+    "howler": "^2.2.3",
+    "mousetrap": "^1.6.5",
+    "ncu": "^0.2.1",
+    "npm-check-updates": "^16.9.0",
+    "remote": "^0.2.6",
+    "requirejs": "^2.3.6"
+  },
+  "scripts": {
+    "start": "electron --enable-transparent-visuals .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --linux",
+    "postinstall": "electron-builder install-app-deps",
+    "nodeGypRebuild": "true"
+  },
+  "build": {
+    "appId": "net.svindseth.music-sheep",
+    "productName": "Music Sheep",
+    "target": [
+      "pkg",
+      "AppImage"
+    ],
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}",
+      "!**/packages",
+      "!**/dist"
+    ]
+  },
+  "Content-Security-Policy": "script-src 'self'"
+}

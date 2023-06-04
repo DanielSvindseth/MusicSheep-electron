@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Music Sheep - v0.9.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="favicon icon" href="icon.png">
+</head>
+<body onload="loadTheme(); listSongs(); updateSeeker(); initEnabled();">
+  <div id="app-window">
+    <div id="header">
+      <div class="action-grp">
+        <div class="action-button">
+          <button id="exit-button" onclick="closeWindow();"><img src="icons/symbolic/window-close-symbolic.svg"><img></button> <!-- ❌ -->
+        </div>
+        <div class="action-button">
+          <button onclick="refreshApp();"><img src="icons/symbolic/refresh-symbolic.svg"><img></button>
+        </div>
+        <div class="action-button">
+          <button id="switch-theme" onclick="switchTheme();"><img src="icons/symbolic/blend-tool-symbolic.svg"><img></button>
+        </div>
+      </div>
+      <div class="action-grp">
+        <div class="action-button">
+          <!-- <button id="Playlist_0" onclick="setPlaylist(Playlist_0);"><img src="icons/symbolic/go-home-symbolic.svg"><img></button> -->
+          <button id="Playlist_0" onclick="setPlaylist(Playlist_0); highlightPlaylist(0);" class="enabled"><h2 class="bold">~/Music</h2></button>
+        </div>
+        <div class="action-button">
+          <h4>/</h4>
+        </div>
+        <div class="action-button">
+          <button id="Playlist_1" onclick="setPlaylist(Playlist_1); highlightPlaylist(1);"><h2>1</h2></button>
+        </div>
+        <div class="action-button">
+          <button id="Playlist_2" onclick="setPlaylist(Playlist_2); highlightPlaylist(2);"><h2>2</h2></button>
+        </div>
+        <div class="action-button">
+          <button id="Playlist_3" onclick="setPlaylist(Playlist_3); highlightPlaylist(3);"><h2>3</h2></button>
+        </div>
+        <div class="action-button">
+          <button id="Playlist_4" onclick="setPlaylist(Playlist_4); highlightPlaylist(4);"><h2>4</h2></button>
+        </div>
+        <div class="action-button">
+          <button id="Playlist_5" onclick="setPlaylist(Playlist_5); highlightPlaylist(5);"><h2>5</h2></button>
+        </div>
+        <div class="action-button">
+          <button id="Playlist_6" onclick="setPlaylist(Playlist_6); highlightPlaylist(6);"><h2>6</h2></button>
+        </div>
+      </div>
+      <div class="action-grp">
+
+        <div class="action-button">
+          <button id="toggle-auto-play" class="" onclick="toggleAutoPlay();"><img src="icons/symbolic/media-playlist-consecutive-symbolic.svg"><img></button>
+        </div>
+        <div id="import" class="width-0">
+          <input id="custom-folder-input" type="text" name="folder" value="">
+          <button onclick="setNewFolder();">Choose folder</button>
+        </div>
+        <div class="action-button">
+          <button onclick="toggleImport();"><img src="icons/symbolic/folder-symbolic.svg"><img></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sub-header">
+      <div id="sub-header-info">
+        <div id="file-emblem">
+          <img id="emblem" src="./icons/file_emblem.png">
+        </div>
+        <div id="file-info">
+          <h4 id="file-bitrate"></h4>
+        </div>
+      </div>
+      <h3 id="now-playing"></h3>
+    </div>
+
+    <div id="main">
+      <ul id="listing"></ul>
+    </div>
+
+    <div id="footer">
+      <div class="footer-row">
+        <div class="meter-box">
+          <h3 id="seekometer"></h3>
+        </div>
+        <input id="seeker" class="slider slider-thin" type="range" name="seeker" value="0" min="0" max="1" step="0.1">
+        <div class="meter-box">
+          <h3 id="song-duration">0</h3>
+        </div>
+      </div>
+      <div class="footer-row">
+        <div id="volume-controls" class="sliderbox">
+          <h3 id="volume-label">Volume</h3>
+          <div class="meter-box">
+            <h3 id="volumometer"></h3>
+          </div>
+          <input id="volume-changer" class="slider" type="range" name="volume" value="0.7" min="0" max="1" step="0.1">
+        </div>
+        <div id="play-controls">
+          <button id="prev-button" class="control-button" onclick="prevSong();"><img id="prev-button-icon" src="icons/prev.png"></img></button>
+          <button id="play-button" class="control-button" onclick="playButton();"><img id="play-button-icon" src="icons/play.png" style="display: ;"></img><img id="pause-button-icon" src="icons/pause.png" style="display: none;"></img></button>
+          <button id="next-button" class="control-button" onclick="nextSong();"><img id="next-button-icon" src="icons/next.png"></img></button>
+        </div>
+        <div id="speed-controls" class="sliderbox">
+          <input id="speed-changer" class="slider" type="range" name="speed" value="0.95" min="0.5" max="1.7" step="0.01">
+          <div class="meter-box">
+            <h3 id="speedometer"></h3>
+          </div>
+          <h3 id="speed-label">Speed</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="scripts.js"></script>
+</body>
+</html>
