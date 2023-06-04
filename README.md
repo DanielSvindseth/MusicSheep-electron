@@ -1,9 +1,10 @@
 # Music Sheep
+![logo](/build/icons/128x128.png)
 Music Sheep is a music player built with electron, for playing your local music library.
 The app allows you to change the playback rate of you music as you listen.
 
-## Installing
-To install, clone the repository and run
+## Usage
+To run the application, clone the repository and install dependencies with
 ```
 npm install
 ```
