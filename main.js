@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, Menu, BrowserWindow, globalshortcut, ipcMain} = require('electron')
+const {app, Menu, BrowserWindow, globalshortcut, ipcMain, dialog} = require('electron')
 const contextMenu = require('electron-context-menu');
 const path = require('path')
 const fs = require('fs-extra')
@@ -36,6 +36,20 @@ function createWindow () {
       // Get the string data here and send it to renderer process
       const musicFolder = app.getPath('music');
       event.reply('send-data', musicFolder);
+  });
+
+  // Attach listener in the main process with the given ID
+  ipcMain.on('request-folder', (event) => {
+    console.log('hello from the other file!');
+    dialog.showOpenDialog(mainWindow, {
+      properties: ['openFile', 'openDirectory']
+    }).then(result => {
+      console.log(result.canceled)
+      console.log(result.filePaths)
+      event.sender.send('response-folder', result.filePaths);
+    }).catch(err => {
+      console.log(err)
+    })
   });
 
   mainWindow.autoHideMenuBar = true;

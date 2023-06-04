@@ -2,13 +2,12 @@ function id(id) {
   return document.getElementById(id); }
 
 const fs = require('fs-extra');
-const {app, globalshortcut, ipcRenderer} = require('electron');
+const {app, globalshortcut, ipcRenderer, dialog} = require('electron');
 const Mousetrap = require('mousetrap');
 const { Howler } = require('howler');
 const { ExifTool } = require('exiftool-vendored');
 const Exif = new ExifTool();
 // const jsmediatags = window.jsmediatags;
-
 
 // Declaring Variables
 var speedChanger = id("speed-changer");
@@ -29,15 +28,11 @@ ipcRenderer.on('send-data', (event, data) => {
   console.log(data);
   var musicFolder = data;
   if (localStorage.getItem('folder') === null) {
-    localStorage.setItem('folder', musicFolder);
-  }
-});
-
+    localStorage.setItem('folder', musicFolder); } });
 
 // Howler Settings
 Howler.autoSuspend = true;
 Howler.volume(vol);
-
 
 // Speed controls
 var speedometer = id("speedometer");
@@ -45,8 +40,7 @@ speedometer.innerHTML = speedChanger.value;
 speedChanger.oninput = function() {
   speed = speedChanger.value;
   if (audio !== undefined) {
-    audio.rate(speed);
-  }
+    audio.rate(speed); }
   localStorage.setItem("speed", speed);
   speedometer.innerHTML = this.value;
   updateBitrate(); }
@@ -109,8 +103,7 @@ const setSrc = async (number) => {
   audio.once('load', function() {
     playButton();
     initSeeker();
-    updateSeeker();
-  }); }
+    updateSeeker(); }); }
 
 // Play and Pause functions
 function playSong() {
@@ -266,12 +259,8 @@ Mousetrap.addKeycodes({
     164: 'play' });   // Not working (?)
 
 // Add keypress functions
-Mousetrap.bind('space', function() {
-  id('play-button').click();
-  return false; });
-Mousetrap.bind('k', function() {
-  id('play-button').click();
-  return false; });
+Mousetrap.bind('space', function() { id('play-button').click(); return false; });
+Mousetrap.bind('k', function() { id('play-button').click(); return false; });
 Mousetrap.bind('q', function() {
   volumeChanger.value = parseFloat((volumeChanger.value * 10) - 0.1 * 10) / 10;
   //console.log('Volume is now ' + vol);
@@ -322,54 +311,19 @@ Mousetrap.bind("\\", function() {
   if (audio !== undefined) {
     audio.rate(speed); }
   return false; });
-Mousetrap.bind('f', function(){
-  prevSong();
-  return false; });
-Mousetrap.bind('j', function(){
-  nextSong();
-  return false; });
-Mousetrap.bind('play', function() {
-  id('play-button').click();
-  return false; });
-Mousetrap.bind('r', function(){
-  refreshApp();
-});
-Mousetrap.bind('a', function(){
-  toggleAutoPlay();
-});
-
-Mousetrap.bind('1', function(){
-  setPlaylist(Playlist_1);
-  highlightPlaylist(1);
-});
-Mousetrap.bind('2', function(){
-  setPlaylist(Playlist_2);
-  highlightPlaylist(2);
-});
-Mousetrap.bind('3', function(){
-  setPlaylist(Playlist_3);
-  highlightPlaylist(3);
-});
-Mousetrap.bind('4', function(){
-  setPlaylist(Playlist_4);
-  highlightPlaylist(4);
-});
-Mousetrap.bind('5', function(){
-  setPlaylist(Playlist_5);
-  highlightPlaylist(5);
-});
-Mousetrap.bind('6', function(){
-  setPlaylist(Playlist_6);
-  highlightPlaylist(6);
-});
-Mousetrap.bind('`', function(){
-  setPlaylist(Playlist_0);
-  highlightPlaylist(0);
-});
-Mousetrap.bind('0', function(){
-  setPlaylist(Playlist_0);
-  highlightPlaylist(0);
-});
+Mousetrap.bind('f', function(){ prevSong(); return false; });
+Mousetrap.bind('j', function(){ nextSong(); return false; });
+Mousetrap.bind('play', function() { id('play-button').click(); return false; });
+Mousetrap.bind('r', function(){ refreshApp(); });
+Mousetrap.bind('a', function(){ toggleAutoPlay(); });
+Mousetrap.bind('1', function(){ setPlaylist(Playlist_1); highlightPlaylist(1); });
+Mousetrap.bind('2', function(){ setPlaylist(Playlist_2); highlightPlaylist(2); });
+Mousetrap.bind('3', function(){ setPlaylist(Playlist_3); highlightPlaylist(3); });
+Mousetrap.bind('4', function(){ setPlaylist(Playlist_4); highlightPlaylist(4); });
+Mousetrap.bind('5', function(){ setPlaylist(Playlist_5); highlightPlaylist(5); });
+Mousetrap.bind('6', function(){ setPlaylist(Playlist_6); highlightPlaylist(6); });
+Mousetrap.bind('`', function(){ setPlaylist(Playlist_0); highlightPlaylist(0); });
+Mousetrap.bind('0', function(){ setPlaylist(Playlist_0); highlightPlaylist(0); });
 
 function highlightPlaylist(n) {
   for (let i = 0; i < 7; i++) {
@@ -382,7 +336,7 @@ function highlightPlaylist(n) {
 var folder;
 if (localStorage.getItem('folder') !== null) {
   folder = localStorage.getItem('folder') + "/"; } else {
-  folder = "/home/daniel/Music/"; }
+  folder = localStorage.getItem('musicFolder'); }
 var w = 1;
 var q;
 
@@ -397,15 +351,20 @@ var Playlist_6 = "/6/";
 
 function setPlaylist(number) {
  folder = localStorage.getItem('folder') + number;
- refreshSongs();
+ refreshSongs(); }
 
-}
+// const setNewFolder = async() => {
+//   const path = await dialog.showOpenDialog({ properties: ['openDirectory'] }); console.log(path);}
 
 function setNewFolder() {
-  var path = dialog.showOpenDialog({
-    properties: ['openDirectory']
-  });
+  ipcRenderer.send('request-folder');
 }
+
+ipcRenderer.on('response-folder', (event, arg) => {
+    console.log(arg);
+    localStorage.setItem('folder', arg[0]);
+    setPlaylist('/')
+});
 
 
 // List all files in variable 'folder' and make buttons for them
@@ -439,8 +398,7 @@ function listSongs() {
         var filetype = file.slice(-4);
         // console.log(fileName);
       } else {
-        console.warn(file + ' might not be a supported file! File extension not 3 or 4 characters long!');
-      }
+        console.warn(file + ' might not be a supported file! File extension not 3 or 4 characters long!'); }
 
       if (e == 'mp3' || e == 'm4a' || e == 'wav' || e == 'lac' || e == 'ogg' || e == 'aac' || e == 'mp4' || e == 'pus' || e == 'iff') {
         let item = document.createElement("li");
@@ -461,34 +419,14 @@ function listSongs() {
         localStorage.setItem('w', w); } }); });
   console.log("Finished listing files"); }
 
-// Refresh the files -without refreshing the whole application- ( <--- That's a lie, it reloads the whole application )
+// Refresh the files -without refreshing the whole application
 function refreshSongs() {
   let output = id("listing");
   listing.innerHTML = '';
-  listSongs();
-  //window.location.reload(true); // Is this really needed?
-}
+  listSongs(); }
 
 function refreshApp() {
-  window.location.reload(true);
-}
-
-// Obsolete :D
-// Keeping for future reference
-/*
-document.getElementById("filepicker").addEventListener("change", function(event) {
-  let output = document.getElementById("listing");
-  let files = event.target.files;
-
-  for (let i=0; i<files.length; i++) {
-    let item = document.createElement("li");
-    let button = document.createElement("button");
-    item.appendChild(button);
-    button.setAttribute('class', 'list-item');
-    button.innerHTML = files[i].path;
-    button.setAttribute('onclick', 'setSrc(' + "'" + files[i].path + "'" + ');');
-    output.appendChild(item); }; }, false);
-*/
+  window.location.reload(true); }
 
 function loadTheme() {
   var r = document.querySelector(':root');
@@ -510,9 +448,7 @@ function loadTheme() {
     console.warn(localStorage.getItem('theme') + 'is not a valid theme! Falling back to default (1)');
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients.png')");
-    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients.png')");
-  }
-}
+    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients.png')"); } }
 
 function switchTheme() {
   var r = document.querySelector(':root');
@@ -522,20 +458,18 @@ function switchTheme() {
     localStorage.setItem('theme', '2');
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients_2.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients_2.png')");
-    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients_2.png')");
-  } else if (theme == 'url("./backdrops/color_gradients_2.png")') {
+    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients_2.png')"); }
+  else if (theme == 'url("./backdrops/color_gradients_2.png")') {
     localStorage.setItem('theme', '3');
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients_3.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients_3.png')");
-    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients_3.png')");
-  } else {
+    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients_3.png')"); }
+  else {
     localStorage.setItem('theme', '1');
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients.png')");
-    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients.png')");
-  }
-  console.log('Changed theme!');
-}
+    r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients.png')"); }
+  console.log('Changed theme!'); }
 
 function setFolder() {
   var input = id('custom-folder-input').value;
@@ -550,82 +484,35 @@ function setEmblem(filetype) {
   let emblem = id('emblem')
   console.log(filetype);
   if (filetype == 'flac') {
-    emblem.src = './icons/flac_emblem.png';
-  } else if (filetype == 'mp3') {
-    emblem.src = './icons/mp3_emblem.png';
-  } else if (filetype == 'm4a') {
-    emblem.src = './icons/m4a_emblem.png';
-  } else {
+    emblem.src = './icons/flac_emblem.png'; }
+  else if (filetype == 'mp3') {
+    emblem.src = './icons/mp3_emblem.png'; }
+  else if (filetype == 'm4a') {
+    emblem.src = './icons/m4a_emblem.png'; }
+  else {
     emblem.src = './icons/file_emblem.png';
-    console.warn('Filetype does not have an emblem');
-  }
-}
+    console.warn('Filetype does not have an emblem'); } }
 
 function showBitrate(filetype, metadata) {
   if (filetype == 'm4a') {
     let bitrate = parseInt(metadata.AvgBitrate);
     id('file-bitrate').innerHTML = bitrate;
-    localStorage.setItem('bitrate', bitrate);
+    localStorage.setItem('bitrate', bitrate); }
 
-  } else if (filetype = 'flac') {
+  else if (filetype = 'flac') {
     let bitrate = ((metadata.SampleRate * metadata.BitsPerSample * 2) / 1000);
     id('file-bitrate').innerHTML = bitrate;
-    localStorage.setItem('bitrate', bitrate);
-  }
-  updateBitrate();
-}
+    localStorage.setItem('bitrate', bitrate); }
+  updateBitrate(); }
 
 function updateBitrate() {
   let bitrate = localStorage.getItem('bitrate') * speed;
-  id('file-bitrate').innerHTML = bitrate.toFixed(2) + ' kbps';
-}
-
-
-/* TODO:
-  Add pitch-changing pause/play functionality like LP-disc
-  Add video-view if mp4 // LOL
-*/
-
-
+  id('file-bitrate').innerHTML = bitrate.toFixed(2) + ' kbps'; }
 
 function closeWindow() {
   window.close(); }
 
-/*
-function minimizeWindow() {
-  window.minimize(); }
-
-function maximizeWindow() {
-  window.maximize(); }
-*/
-/*
-// Window Control
-(function () {
-
-      var remote = require('remote');
-      var BrowserWindow = remote.require('browser-window');
-      //var BrowserWindow = require('browser-window');
-
-     function init() {
-          document.getElementById("min-btn").addEventListener("click", function (e) {
-               var window = BrowserWindow.getFocusedWindow();
-               window.minimize();
-          });
-
-          document.getElementById("max-btn").addEventListener("click", function (e) {
-               var window = BrowserWindow.getFocusedWindow();
-               window.maximize();
-          });
-
-          document.getElementById("close-btn").addEventListener("click", function (e) {
-               var window = BrowserWindow.getFocusedWindow();
-               window.close();
-          });
-     };
-
-     document.onreadystatechange = function () {
-          if (document.readyState == "complete") {
-               init();
-          }
-     }; })();
-*/
+  /* TODO:
+    Add pitch-changing pause/play functionality like LP-disc
+    Add video-view if mp4 // LOL
+  */
