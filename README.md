@@ -1,5 +1,6 @@
-# Music Sheep
 ![logo](/build/icons/128x128.png)
+
+# Music Sheep 
 Music Sheep is a music player built with electron, for playing your local music library.
 The app allows you to change the playback rate of you music as you listen.
 
