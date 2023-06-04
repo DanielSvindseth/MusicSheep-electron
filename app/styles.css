@@ -14,9 +14,6 @@
 }
 
 html {
-  /*background-image: url('backdrop.jpg');
-  background-size: cover;
-  background-attachment: fixed;*/
   background-color: #0000;
   border-radius: 6px;
 }
@@ -72,7 +69,6 @@ html::-webkit-scrollbar-thumb {
   grid-area: main;
   overflow-y: scroll;
   background-color: #1116;
-  /* background-image: url('./color_gradients.png'); */
   background-image: var(--backdrop);
   background-position: center;
 }
@@ -80,7 +76,6 @@ html::-webkit-scrollbar-thumb {
 button {
   width: 52px;
   height: 52px;
-  /* background-image: linear-gradient(to top, #111f 0%, #333f 100%); */
   background: #ccc3;
   border: none;
   vertical-align: middle;
@@ -114,16 +109,13 @@ button.list-item {
 
 button.list-item:hover {
   filter: opacity(1);
-  /* background-image: linear-gradient(to top, #fff4 0%, #fff4 100%); */
 }
 
 button.list-item:active {
-  /*background-image: linear-gradient(to top, #D32F58 0%, #D32F58 100%);*/
   color: white;
 }
 
 button:hover {
-  /* background-image: linear-gradient(to top, #222f 0%, #111f 100%); */
   background: #bbb3;
 }
 
@@ -137,7 +129,6 @@ button:active {
 
 #footer {
   grid-area: footer;
-  /* background: linear-gradient(#0002, #0002), url('./color_gradients.png'); */
   background: var(--backdrop-dark);
   background-position: bottom;
   filter: opacity(1);
@@ -149,8 +140,6 @@ button:active {
   width: 100%;
   justify-content: center;
   flex-flow: row wrap;
-  /* border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px; */
 }
 
 .footer-row {
@@ -211,13 +200,10 @@ button h1 {
 }
 
 .control-button {
-  /*background-image: linear-gradient(to top, #888f 0%, #aaaf 100%);*/
-  /* background-image: linear-gradient(to top, #111f 0%, #333f 100%); */
   background: #ccc3;
 }
 
 .control-button:hover {
-  /* background-image: linear-gradient(to top, #222f 0%, #111f 100%); */
   background: #bbb3;
 }
 
@@ -283,7 +269,6 @@ button h1 {
   text-align: right;
   padding-left: 10px;
   padding-right: 10px;
-  /* text-shadow: 0px 0px 2px #aaa; */
   margin: 0;
   margin-top: 3px;
   margin-bottom: -10px;
@@ -296,7 +281,6 @@ button h1 {
   text-align: left;
   padding-left: 10px;
   padding-right: 10px;
-  /* text-shadow: 0px 0px 2px #aaa; */
   margin: 0;
   margin-top: 3px;
   margin-bottom: -10px;
@@ -312,8 +296,6 @@ button h1 {
   height: 8px;
   margin: auto 0;
   border-radius: 7px;
-  /*background-image: linear-gradient(to top, #888f 0%, #aaaf 100%);*/
-  /* background-image: linear-gradient(to top, #111f 0%, #333f 100%); */
   background: #ccc3;
   border: #fff7 solid 1px;
   outline: none;
@@ -324,7 +306,6 @@ button h1 {
 
 .slider-thin {
   height: 8px;
-  border-radius: 4px;
 }
 
 .slider:hover {
@@ -366,7 +347,6 @@ button h1 {
   vertical-align: middle;
   padding-left: 10px;
   padding-right: 10px;
-  /* text-shadow: 0px 0px 2px #aaa; */
 }
 
 #speed-label {
@@ -391,7 +371,6 @@ button h1 {
   vertical-align: middle;
   padding-left: 10px;
   padding-right: 10px;
-  /* text-shadow: 0px 0px 2px #aaa; */
 }
 
 #volume-label {
@@ -407,8 +386,6 @@ button h1 {
   height: 46px;
   width: calc(100% - 12px);
   border-bottom: white solid 1px;
-  /*background-image: linear-gradient(to top, #0007 0%, #3337 20%, #ccc7 90%, #fff7 100%);*/
-  /* background: linear-gradient( #0003, #0003), url('./color_gradients.png'); */
   background: var(--backdrop-dark);
   display: flex;
   justify-content: space-between;
@@ -418,8 +395,6 @@ button h1 {
   padding-left: 6px;
   padding-right: 6px;
   -webkit-app-region: drag;
-  /* border-top-left-radius: 6px;
-  border-top-right-radius: 6px; */
 }
 
 .action-grp {
@@ -430,7 +405,6 @@ button h1 {
   grid-area: sub-header;
   width: calc(100% - 6px);
   height: 40px;
-  /* background-image: url('./color_gradients.png'); */
   background-image: var(--backdrop-darker);
   background-color: #111d;
   box-shadow: 0 0 20px -16px black;
@@ -502,7 +476,6 @@ button h1 {
   height: 38px;
   border-radius: 6px;
   background: #ccc3;
-  /*background-image: linear-gradient(to top, #888f 0%, #aaaf 100%);*/
 }
 
 .action-button button:hover {
@@ -515,18 +488,11 @@ button h1 {
 }
 
 .action-button button h2 {
-  /*margin-top: 13.5px;*/
   line-height: 1;
   margin: auto auto;
   font-family: 'Noto Emoji', 'Lexend Deca', 'Open Sans', 'Average Sans';
   color: #eee;
-  /* text-shadow: 0px 0px 1px black; */
   font-size: 14px;
-/*
-  -webkit-background-clip: text;
-  background-image: linear-gradient(to bottom, #fff 0%, #ccc 100%);
-  color: transparent;
-*/
 }
 
 .action-button button#Playlist_0 {
@@ -535,7 +501,7 @@ button h1 {
 }
 
 .action-button button#Playlist_0.enabled {
-  border: #ccc solid 1px;
+  border: #eee solid 2px;
 }
 
 .action-button button#Playlist_0:hover {
@@ -548,13 +514,11 @@ button h1 {
 }
 
 button.disabled {
-
 }
 
 button.enabled {
-  /* background-image: linear-gradient(to top, #4ad 0%, #6cf 100%); */
   background: #ccc5;
-  border: #ccc solid 1px;
+  border: #eee solid 2px;
 }
 
 #exit-button {
@@ -578,60 +542,6 @@ button.enabled {
   background: #aaa3;
   border: none;
 }
-
-#import {
-  height: max-content;
-  margin: auto 4px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  transition: 100ms;
-  -webkit-app-region: no-drag;
-  position: fixed;
-  top: 92px;
-  right: 12px;
-  z-index: 20;
-  border: white solid 2px;
-  border-radius: 10px;
-}
-
-#import button {
-  width: 140px;
-  height: 38px;
-  margin: auto 0;
-  background: #ccc3;
-  color: white;
-  font-weight: 400;
-  font-size: 16px;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-  -webkit-app-region: no-drag;
-}
-
-#import button:hover {
-  border: white solid 1px;
-}
-
-#import input[type="text"] {
-  height: 38px;
-  width: 260px;
-  margin: auto 0;
-  padding: 0 20px;
-  border: 0;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  -webkit-app-region: no-drag;
-}
-
-#import.width-0 {
-  width: 0;
-  display: none;
-}
-
-#import.width-full {
-  width: max-content;
-}
-
 
 #title-bar-btns {
  -webkit-app-region: no-drag;

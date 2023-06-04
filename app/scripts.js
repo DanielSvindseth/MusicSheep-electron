@@ -91,8 +91,6 @@ const setSrc = async (number) => {
   filetype = id(number).getAttribute('filetype');
   const metadata = await Exif.read(song);
   console.log(metadata);
-  console.log(metadata.AvgBitrate);
-  // Exif.end(); // This might be needed but implemented another way
 
   id('now-playing').innerHTML = songName; // mark active track with css
   id(number).className += ' active-playing';
@@ -263,7 +261,6 @@ Mousetrap.bind('space', function() { id('play-button').click(); return false; })
 Mousetrap.bind('k', function() { id('play-button').click(); return false; });
 Mousetrap.bind('q', function() {
   volumeChanger.value = parseFloat((volumeChanger.value * 10) - 0.1 * 10) / 10;
-  //console.log('Volume is now ' + vol);
   volumometer.innerHTML = volumeChanger.value;
   vol = volumeChanger.value;
   Howler.volume(vol);
@@ -271,7 +268,6 @@ Mousetrap.bind('q', function() {
   return false; });
 Mousetrap.bind('w', function() {
   volumeChanger.value = parseFloat((volumeChanger.value * 10) + 0.1 * 10) / 10;
-  //console.log('Volume is now ' + vol);
   volumometer.innerHTML = volumeChanger.value;
   vol = volumeChanger.value;
   Howler.volume(vol);
@@ -279,7 +275,6 @@ Mousetrap.bind('w', function() {
   return false; });
 Mousetrap.bind('[', function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) - 0.05 * 10) / 10;
-  //console.log('Speed is now ' + speedChanger.value);
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
   if (audio !== undefined) {
@@ -288,7 +283,6 @@ Mousetrap.bind('[', function() {
   return false; });
 Mousetrap.bind(']', function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) + 0.05 * 10) / 10;
-  //console.log('Speed is now ' + speedChanger.value);
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
   if (audio !== undefined) {
@@ -297,7 +291,6 @@ Mousetrap.bind(']', function() {
   return false; });
 Mousetrap.bind("'", function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) - 0.01 * 10) / 10;
-  //console.log('Speed is now ' + speedChanger.value);
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
   if (audio !== undefined) {
@@ -305,7 +298,6 @@ Mousetrap.bind("'", function() {
   return false; });
 Mousetrap.bind("\\", function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) + 0.01 * 10) / 10;
-  //console.log('Speed is now ' + speedChanger.value);
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
   if (audio !== undefined) {
@@ -340,7 +332,7 @@ if (localStorage.getItem('folder') !== null) {
 var w = 1;
 var q;
 
-// 6 Playlists
+// 7 Playlists
 var Playlist_0 = "/"
 var Playlist_1 = "/1/";
 var Playlist_2 = "/2/";
@@ -357,14 +349,15 @@ function setPlaylist(number) {
 //   const path = await dialog.showOpenDialog({ properties: ['openDirectory'] }); console.log(path);}
 
 function setNewFolder() {
-  ipcRenderer.send('request-folder');
-}
+  ipcRenderer.send('request-folder'); }
 
-ipcRenderer.on('response-folder', (event, arg) => {
-    console.log(arg);
-    localStorage.setItem('folder', arg[0]);
-    setPlaylist('/')
-});
+ipcRenderer.on('response-folder', (event, argFilePaths, argCanceled) => {
+    console.log(argFilePaths);
+    if (argCanceled == false) {
+      localStorage.setItem('folder', argFilePaths[0]);
+      setPlaylist('/') }
+    else {
+      console.log('Canceled selecting new filepath'); } });
 
 
 // List all files in variable 'folder' and make buttons for them
@@ -475,11 +468,6 @@ function setFolder() {
   var input = id('custom-folder-input').value;
   localStorage.setItem('folder', input); }
 
-function toggleImport() {
-  if (id('import').className == 'width-full') {
-    id('import').className = 'width-0'; } else {
-    id('import').className = 'width-full'; } }
-
 function setEmblem(filetype) {
   let emblem = id('emblem')
   console.log(filetype);
@@ -499,10 +487,16 @@ function showBitrate(filetype, metadata) {
     id('file-bitrate').innerHTML = bitrate;
     localStorage.setItem('bitrate', bitrate); }
 
-  else if (filetype = 'flac') {
+  else if (filetype == 'mp3') {
+    let bitrate = parseInt(metadata.AudioBitrate);
+    id('file-bitrate').innerHTML = bitrate;
+    localStorage.setItem('bitrate', bitrate); }
+
+  else if (filetype == 'flac') {
     let bitrate = ((metadata.SampleRate * metadata.BitsPerSample * 2) / 1000);
     id('file-bitrate').innerHTML = bitrate;
     localStorage.setItem('bitrate', bitrate); }
+
   updateBitrate(); }
 
 function updateBitrate() {

@@ -46,7 +46,7 @@ function createWindow () {
     }).then(result => {
       console.log(result.canceled)
       console.log(result.filePaths)
-      event.sender.send('response-folder', result.filePaths);
+      event.sender.send('response-folder', result.filePaths, result.canceled);
     }).catch(err => {
       console.log(err)
     })
