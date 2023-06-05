@@ -16,6 +16,7 @@
 html {
   background-color: #0000;
   border-radius: 6px;
+  min-width: 596px;
 }
 
 body {
@@ -432,18 +433,33 @@ button h1 {
 }
 
 #file-emblem {
-  max-height: 40px;
+  margin: 10px 10px;
+  height: 16px;
+  width: 40px;
+  border-radius: 2px;
+  fill: opacity(0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#file-emblem > img {
-  height: 18px;
-  margin: 11px 8px;
+.file-emblem-flac    { background-color: #b2801a; border: solid 2px #e6af41; }
+.file-emblem-m4a     { background-color: #843673; border: solid 2px #d68dc6; }
+.file-emblem-mp3     { background-color: #6bac3b; border: solid 2px #86e641; }
+.file-emblem-ogg     { background-color: #ac3b3f; border: solid 2px #d55e62; }
+.file-emblem-opus    { background-color: #38407d; border: solid 2px #5e6cd5; }
+.file-emblem-gereric { background-color: #737373; border: solid 2px #a6a6a6; }
+
+#emblem {
+  font-size: 14px;
+  margin: 0;
+  color: #eee;
 }
 
 #file-info {
   height: 40px;
   margin: 0px 2px;
-  width: fit-content();
+  width: max-content();
 }
 
 #file-info > h4 {
@@ -497,15 +513,20 @@ button h1 {
 
 .action-button button#Playlist_0 {
   border: transparent solid 1px;
+  padding: 0 10px;
   width: max-content;
 }
 
 .action-button button#Playlist_0.enabled {
   border: #eee solid 2px;
+  padding: 0 9px;
+  width: calc(max-content + 1px);
 }
 
 .action-button button#Playlist_0:hover {
   border: white solid 1px;
+  padding: 0 10px;
+  width: max-content;
 }
 
 .action-button h4 {
@@ -522,12 +543,13 @@ button.enabled {
 }
 
 #exit-button {
-  height: 28px;
-  width: 28px;
-  border-radius: 14px;
-  margin-right: 10px;
+  height: 26px;
+  width: 26px;
+  border-radius: 13px;
+  margin-right: 8px;
   margin-left: 2px;
-  /* padding-left: 4px; */
+  padding-left: 5px;
+  padding-top: 5px;
 }
 
 #exit-button > h2 {

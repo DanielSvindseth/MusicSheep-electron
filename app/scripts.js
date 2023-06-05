@@ -118,6 +118,7 @@ function pauseSong() {
 
 // Play button behaviour
 function playButton() {
+  console.log(Howler.volume());
   if (typeof audio !== 'undefined') {
     if (playing === 0) {
       playSong();
@@ -177,7 +178,8 @@ function nextSong() {
 
 // Get / Set position in song
 var seeker = id("seeker");
-seekometer.innerHTML = seeker.value;
+// seekometer.innerHTML = seeker.value;
+seekometer.innerHTML = '00:00';
 seeker.oninput = function() {
   s = seeker.value;
   if (audio !== undefined) {
@@ -187,30 +189,44 @@ seeker.oninput = function() {
 
 function updateSeeker() {
   seeker = id('seeker');
-  function u() {
+  function update() {
     if (audio != undefined || audio != null) {
       seeker.value = audio.seek();
-      s = seeker.value;
-      t = Math.round(s);
-      d = audio.duration();
-      h = Math.round(d);
-      //q = toTime(t);
-      seekometer.innerHTML = t;
-      if (t == h && h != 0 && localStorage.getItem('AutoPlay') == 'yes') {
+      v = seeker.value; // time in seconds
+      s = Math.round(v); // time rounded to whole seconds
+      d = audio.duration(); // length of song in seconds
+      e = Math.round(d); // length of song rounded to whole seconds
+
+      m = Math.round( s / 60 ); // time in minutes
+      s = ( s % 60 );
+      h = Math.round( m / 60 ); // time in hours
+      m = ( m % 60 );
+
+      // seekometer.innerHTML = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); // hh:mm:ss
+      seekometer.innerHTML = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); // mm:ss
+      if (v == e && e != 0 && localStorage.getItem('AutoPlay') == 'yes') {
         nextSong(); // Something is weird here
-        console.log('playing next song'); } } }
-  setInterval(u, 1);
-  if (audio) {
-    audio.on('end'), function () { console.log('song ended'); } } }
+        console.log('playing next song'); }
+      } }
+  setInterval(update, 1);
+  // if (audio && localStorage.getItem('AutoPlay') == 'yes') { audio.on('end'), function () { nextSong(); console.log('song ended'); } }
+}
 
 function initSeeker() {
   seeker = id('seeker');
   let l = audio.duration();
   seeker.max = l;
-  i = Math.round(l)
-  k = toTime(i);
+  s = Math.round(l)
+  // k = toTime(i);
   // console.log(k);
-  id('song-duration').innerHTML = k; }
+
+  m = Math.round( s / 60 ); // time in minutes
+  s = ( s % 60 );
+  h = Math.round( m / 60 ); // time in hours
+  m = ( m % 60 );
+
+  id('song-duration').innerHTML = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); // mm:ss
+}
 
 function toggleAutoPlay() {
   if (localStorage.getItem('AutoPlay') == 'yes') {
@@ -253,8 +269,6 @@ function toTime(i) {
     time = min + ':' + sec;
     return time; } }
 
-Mousetrap.addKeycodes({
-    164: 'play' });   // Not working (?)
 
 // Add keypress functions
 Mousetrap.bind('space', function() { id('play-button').click(); return false; });
@@ -277,35 +291,30 @@ Mousetrap.bind('[', function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) - 0.05 * 10) / 10;
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
-  if (audio !== undefined) {
-    audio.rate(speed); }
+  if (audio !== undefined) { audio.rate(speed); }
   localStorage.setItem("speed", speed);
   return false; });
 Mousetrap.bind(']', function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) + 0.05 * 10) / 10;
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
-  if (audio !== undefined) {
-    audio.rate(speed); }
+  if (audio !== undefined) { audio.rate(speed); }
   localStorage.setItem("speed", speed);
   return false; });
 Mousetrap.bind("'", function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) - 0.01 * 10) / 10;
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
-  if (audio !== undefined) {
-    audio.rate(speed); }
+  if (audio !== undefined) { audio.rate(speed); }
   return false; });
 Mousetrap.bind("\\", function() {
   speedChanger.value = parseFloat((speedChanger.value * 10) + 0.01 * 10) / 10;
   speedometer.innerHTML = speedChanger.value;
   speed = speedChanger.value;
-  if (audio !== undefined) {
-    audio.rate(speed); }
+  if (audio !== undefined) { audio.rate(speed); }
   return false; });
 Mousetrap.bind('f', function(){ prevSong(); return false; });
 Mousetrap.bind('j', function(){ nextSong(); return false; });
-Mousetrap.bind('play', function() { id('play-button').click(); return false; });
 Mousetrap.bind('r', function(){ refreshApp(); });
 Mousetrap.bind('a', function(){ toggleAutoPlay(); });
 Mousetrap.bind('1', function(){ setPlaylist(Playlist_1); highlightPlaylist(1); });
@@ -316,6 +325,9 @@ Mousetrap.bind('5', function(){ setPlaylist(Playlist_5); highlightPlaylist(5); }
 Mousetrap.bind('6', function(){ setPlaylist(Playlist_6); highlightPlaylist(6); });
 Mousetrap.bind('`', function(){ setPlaylist(Playlist_0); highlightPlaylist(0); });
 Mousetrap.bind('0', function(){ setPlaylist(Playlist_0); highlightPlaylist(0); });
+
+Mousetrap.addKeycodes({ 164: 'play' });   // Not working hmm
+Mousetrap.bind('play', function() { id('play-button').click(); return false; });
 
 function highlightPlaylist(n) {
   for (let i = 0; i < 7; i++) {
@@ -345,9 +357,6 @@ function setPlaylist(number) {
  folder = localStorage.getItem('folder') + number;
  refreshSongs(); }
 
-// const setNewFolder = async() => {
-//   const path = await dialog.showOpenDialog({ properties: ['openDirectory'] }); console.log(path);}
-
 function setNewFolder() {
   ipcRenderer.send('request-folder'); }
 
@@ -358,7 +367,6 @@ ipcRenderer.on('response-folder', (event, argFilePaths, argCanceled) => {
       setPlaylist('/') }
     else {
       console.log('Canceled selecting new filepath'); } });
-
 
 // List all files in variable 'folder' and make buttons for them
 function listSongs() {
@@ -371,25 +379,14 @@ function listSongs() {
       return console.error(err); }
 
     files.forEach( function (file) {
-      // Debugging
-      //console.log("Current src: " + folder + file);
-      // Here We Create the list of all the songs
-
       // Check whether the file is audio
-      //console.log(file);
-      // extract last 3 characters of file names
       let e = file.slice(-3);
-      // console.log(e);
       if (file.slice(-4, -3) == '.') {
-        // console.log(file.slice(-4));
         var fileName = file.slice(0, -4);
         var filetype = file.slice(-3);
-        // console.log(fileName);
       } else if (file.slice(-5, -4) == '.') {
-        // console.log(file.slice(-5));
         var fileName = file.slice(0, -5);
         var filetype = file.slice(-4);
-        // console.log(fileName);
       } else {
         console.warn(file + ' might not be a supported file! File extension not 3 or 4 characters long!'); }
 
@@ -400,7 +397,6 @@ function listSongs() {
         button.setAttribute('id', w);
         item.appendChild(button);
         button.setAttribute('class', 'list-item');
-        // console.log('fileName is ' + fileName);
         button.innerHTML = fileName;
         button.setAttribute('onclick', 'setSrc(' /*+ '"' + folder + file + '"' + ','*/ + w + ');');
         button.setAttribute('path',  folder + file);
@@ -469,16 +465,26 @@ function setFolder() {
   localStorage.setItem('folder', input); }
 
 function setEmblem(filetype) {
-  let emblem = id('emblem')
+  let fileEmblem = id('file-emblem')
   console.log(filetype);
   if (filetype == 'flac') {
-    emblem.src = './icons/flac_emblem.png'; }
+    fileEmblem.className = 'file-emblem-flac';
+    emblem.innerHTML = 'flac'; }
   else if (filetype == 'mp3') {
-    emblem.src = './icons/mp3_emblem.png'; }
+    fileEmblem.className = 'file-emblem-mp3';
+    emblem.innerHTML = 'mp3'; }
   else if (filetype == 'm4a') {
-    emblem.src = './icons/m4a_emblem.png'; }
+    fileEmblem.className = 'file-emblem-m4a';
+    emblem.innerHTML = 'm4a'; }
+  else if (filetype == 'opus') {
+    fileEmblem.className = 'file-emblem-opus';
+    emblem.innerHTML = 'opus'; }
+  else if (filetype == 'ogg') {
+    fileEmblem.className = 'file-emblem-ogg';
+    emblem.innerHTML = 'ogg'; }
   else {
-    emblem.src = './icons/file_emblem.png';
+    fileEmblem.className = 'file-emblem-generic';
+    emblem.innerHTML = '';
     console.warn('Filetype does not have an emblem'); } }
 
 function showBitrate(filetype, metadata) {

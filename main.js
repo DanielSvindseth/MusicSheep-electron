@@ -53,6 +53,7 @@ function createWindow () {
   });
 
   mainWindow.autoHideMenuBar = true;
+  mainWindow.setMinimumSize(596, 596);
   Menu.setApplicationMenu(null)
   // and load the index.html of the app.
   mainWindow.loadFile('app/music.html')
