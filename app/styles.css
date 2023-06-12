@@ -448,6 +448,7 @@ button h1 {
 .file-emblem-mp3     { background-color: #6bac3b; border: solid 2px #86e641; }
 .file-emblem-ogg     { background-color: #ac3b3f; border: solid 2px #d55e62; }
 .file-emblem-opus    { background-color: #38407d; border: solid 2px #5e6cd5; }
+.file-emblem-wav     { background-color: #7448c4; border: solid 2px #9a7ecc; }
 .file-emblem-gereric { background-color: #737373; border: solid 2px #a6a6a6; }
 
 #emblem {

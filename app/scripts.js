@@ -482,6 +482,9 @@ function setEmblem(filetype) {
   else if (filetype == 'ogg') {
     fileEmblem.className = 'file-emblem-ogg';
     emblem.innerHTML = 'ogg'; }
+  else if (filetype == 'wav') {
+    fileEmblem.className = 'file-emblem-wav';
+    emblem.innerHTML = 'wav'; }
   else {
     fileEmblem.className = 'file-emblem-generic';
     emblem.innerHTML = '';
