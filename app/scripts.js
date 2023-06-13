@@ -16,7 +16,19 @@ var speed = speedChanger.value;
 var vol = volumeChanger.value;
 var playing = 0;
 var currentSong = 1;
+var folder
 localStorage.setItem('currentSong', '1');
+
+// 7 Playlists
+var playlist_0 = "/"
+var playlist_1 = "/1/";
+var playlist_2 = "/2/";
+var playlist_3 = "/3/";
+var playlist_4 = "/4/";
+var playlist_5 = "/5/";
+var playlist_6 = "/6/";
+
+const playlists = ['/', '/1/', '/2/', '/3/', '/4/', '/5/', '/6/']
 
 // Send message to main process to get the string data
 ipcRenderer.send('get-data');
@@ -214,9 +226,7 @@ function updateSeeker() {
 if (audio) {
   audio.on('end', () => {
     nextSong();
-    console.log("audio.on('end') triggered. Playing next song"); } ); }
-}
-
+    console.log("audio.on('end') triggered. Playing next song"); } ); } }
 
 
 function initSeeker() {
@@ -242,24 +252,12 @@ function toggleAutoPlay() {
     localStorage.setItem('AutoPlay', 'yes');
     id('toggle-auto-play').className = 'enabled'; } }
 
+
 function initEnabled() {
   if (localStorage.getItem('AutoPlay') == 'no') {
     id('toggle-auto-play').className = 'disabled'; } else {
     id('toggle-auto-play').className = 'enabled'; } }
 
-/* // Who needs the time told in minutes anyway?
-function timeify(i) {
-  if (i >= 60 && i <= 119) {
-    console.log(i);
-    n = i -= 60;
-    console.log(n);
-    return '1:' + n; }
-  else if (i >= 120) {
-    console.log(i);
-    n = i -= 120;
-    console.log(n);
-    return '2:' + n; } }
-*/
 
 function toTime(i) {
   var min = 0;
@@ -270,11 +268,32 @@ function toTime(i) {
       i -= 60;
       min++; }
     sec = i;
-    if (sec.toString().length == 1) {
-      sec = '0' + sec;
-    }
+    if (sec.toString().length == 1) { sec = '0' + sec; }
     time = min + ':' + sec;
     return time; } }
+
+
+// Add eventListeners to app elements
+id('body').addEventListener("load", function() { loadTheme(); listSongs(); updateSeeker(); initEnabled(); })
+
+id('play-button').addEventListener("click", playButton);
+id('prev-button').addEventListener("click", prevSong);
+id('next-button').addEventListener("click", nextSong);
+
+id('exit-app').addEventListener("click", closeWindow);
+id('refresh-app').addEventListener("click", refreshApp);
+id('switch-theme').addEventListener("click", switchTheme);
+
+id('playlist-0').addEventListener("click", function() { setPlaylist(0); });
+id('playlist-1').addEventListener("click", function() { setPlaylist(1); });
+id('playlist-2').addEventListener("click", function() { setPlaylist(2); });
+id('playlist-3').addEventListener("click", function() { setPlaylist(3); });
+id('playlist-4').addEventListener("click", function() { setPlaylist(4); });
+id('playlist-5').addEventListener("click", function() { setPlaylist(5); });
+id('playlist-6').addEventListener("click", function() { setPlaylist(6); });
+
+id('toggle-auto-play').addEventListener("click", toggleAutoPlay);
+id('new-folder').addEventListener("click", setNewFolder);
 
 
 // Add keypress functions
@@ -324,45 +343,40 @@ Mousetrap.bind('f', function(){ prevSong(); return false; });
 Mousetrap.bind('j', function(){ nextSong(); return false; });
 Mousetrap.bind('r', function(){ refreshApp(); });
 Mousetrap.bind('a', function(){ toggleAutoPlay(); });
-Mousetrap.bind('1', function(){ setPlaylist(Playlist_1); highlightPlaylist(1); });
-Mousetrap.bind('2', function(){ setPlaylist(Playlist_2); highlightPlaylist(2); });
-Mousetrap.bind('3', function(){ setPlaylist(Playlist_3); highlightPlaylist(3); });
-Mousetrap.bind('4', function(){ setPlaylist(Playlist_4); highlightPlaylist(4); });
-Mousetrap.bind('5', function(){ setPlaylist(Playlist_5); highlightPlaylist(5); });
-Mousetrap.bind('6', function(){ setPlaylist(Playlist_6); highlightPlaylist(6); });
-Mousetrap.bind('`', function(){ setPlaylist(Playlist_0); highlightPlaylist(0); });
-Mousetrap.bind('0', function(){ setPlaylist(Playlist_0); highlightPlaylist(0); });
+Mousetrap.bind('1', function(){ setPlaylist(1);});
+Mousetrap.bind('2', function(){ setPlaylist(2);});
+Mousetrap.bind('3', function(){ setPlaylist(3);});
+Mousetrap.bind('4', function(){ setPlaylist(4);});
+Mousetrap.bind('5', function(){ setPlaylist(5);});
+Mousetrap.bind('6', function(){ setPlaylist(6);});
+Mousetrap.bind('`', function(){ setPlaylist(0);});
+Mousetrap.bind('0', function(){ setPlaylist(0);});
 
 Mousetrap.addKeycodes({ 164: 'play' });   // Not working hmm
 Mousetrap.bind('play', function() { id('play-button').click(); return false; });
 
+
 function highlightPlaylist(n) {
   for (let i = 0; i < 7; i++) {
-    id('Playlist_' + i).classList.remove('enabled');
+    id('playlist-' + i).classList.remove('enabled');
   }
-  id('Playlist_' + n).className = 'enabled';
+  id('playlist-' + n).className = 'enabled';
 }
 
+
 // Where to get files from
-var folder;
 if (localStorage.getItem('folder') !== null) {
   folder = localStorage.getItem('folder') + "/"; } else {
   folder = localStorage.getItem('musicFolder'); }
 var w = 1;
 var q;
 
-// 7 Playlists
-var Playlist_0 = "/"
-var Playlist_1 = "/1/";
-var Playlist_2 = "/2/";
-var Playlist_3 = "/3/";
-var Playlist_4 = "/4/";
-var Playlist_5 = "/5/";
-var Playlist_6 = "/6/";
 
-function setPlaylist(number) {
- folder = localStorage.getItem('folder') + number;
+function setPlaylist(n) {
+ folder = localStorage.getItem('folder') + playlists[n];
+ highlightPlaylist(n)
  refreshSongs(); }
+
 
 function setNewFolder() {
   ipcRenderer.send('request-folder'); }
@@ -371,9 +385,10 @@ ipcRenderer.on('response-folder', (event, argFilePaths, argCanceled) => {
     console.log(argFilePaths);
     if (argCanceled == false) {
       localStorage.setItem('folder', argFilePaths[0]);
-      setPlaylist('/') }
+      setPlaylist(0) } // '/'
     else {
       console.log('Canceled selecting new filepath'); } });
+
 
 // List all files in variable 'folder' and make buttons for them
 function listSongs() {
@@ -387,17 +402,17 @@ function listSongs() {
 
     files.forEach( function (file) {
       // Check whether the file is audio
-      let e = file.slice(-3);
+      // let e = file.slice(-3);
       if (file.slice(-4, -3) == '.') {
         var fileName = file.slice(0, -4);
-        var filetype = file.slice(-3);
+        var fileType = file.slice(-3);
       } else if (file.slice(-5, -4) == '.') {
         var fileName = file.slice(0, -5);
-        var filetype = file.slice(-4);
+        var fileType = file.slice(-4);
       } else {
-        console.warn(file + ' might not be a supported file! File extension not 3 or 4 characters long!'); }
+        console.warn(file + ' might not be a supported file! File extension not 3 or 4 characters long! Skipping…'); }
 
-      if (e == 'mp3' || e == 'm4a' || e == 'wav' || e == 'lac' || e == 'ogg' || e == 'aac' || e == 'mp4' || e == 'pus' || e == 'iff') {
+      if (fileType == 'mp3' || fileType == 'm4a' || fileType == 'wav' || fileType == 'flac' || fileType == 'ogg' || fileType == 'aac' || fileType == 'mp4' || fileType == 'opus' || fileType == 'aiff') {
         let item = document.createElement("li");
         let button = document.createElement("button");
         button.setAttribute('number', w);
@@ -409,7 +424,7 @@ function listSongs() {
         button.setAttribute('path',  folder + file);
         button.setAttribute('short-path', file);
         button.setAttribute('fileName', fileName);
-        button.setAttribute('filetype', filetype);
+        button.setAttribute('filetype', fileType);
         output.appendChild(item);
         w++;
         localStorage.setItem('w', w); } }); });

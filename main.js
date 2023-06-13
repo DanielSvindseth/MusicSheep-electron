@@ -7,9 +7,9 @@ const fs = require('fs-extra')
 contextMenu({
     prepend: (defaultActions, params, browserWindow) => [
         {
-            // label: 'Rainbow',
+            label: 'Menu', // this is needed, otherwise right-click won't work
             // Only show it when right-clicking images
-            // visible: params.mediaType === 'image'
+            visible: params.mediaType === 'video'
         }
     ]
 });
@@ -27,8 +27,7 @@ function createWindow () {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true // why is this needed again?
+      contextIsolation: false
     }
   })
 
@@ -55,13 +54,11 @@ function createWindow () {
   mainWindow.autoHideMenuBar = true;
   mainWindow.setMinimumSize(596, 596);
   Menu.setApplicationMenu(null);
-  // and load the index.html of the app.
   mainWindow.loadFile('app/music.html');
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools() // open devtools
 }
 
-app.on('ready', () => setTimeout(createWindow, 400));
+app.on('ready', () => setTimeout(createWindow, 400)); // 400
 
 /*
 // This method will be called when Electron has finished
@@ -76,7 +73,6 @@ app.whenReady().then(() => {
   })
 })
 */
-
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

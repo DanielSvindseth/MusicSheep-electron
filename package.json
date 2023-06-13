@@ -1,12 +1,13 @@
 {
-  "name": "MusicSheep",
+  "name": "Music Sheep",
   "version": "0.9.0",
   "description": "A music player",
   "main": "main.js",
   "repository": "",
   "keywords": [
     "sheep",
-    "music"
+    "music",
+    "player"
   ],
   "author": "Daniel Svindseth",
   "license": "MIT",
@@ -24,8 +25,8 @@
     "howler": "^2.2.3",
     "mousetrap": "^1.6.5",
     "ncu": "^0.2.1",
+    "nth-check": "^2.0.1",
     "npm-check-updates": "^16.9.0",
-    "remote": "^0.2.6",
     "requirejs": "^2.3.6"
   },
   "scripts": {

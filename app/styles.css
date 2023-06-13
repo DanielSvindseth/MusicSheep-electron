@@ -466,6 +466,7 @@ button h1 {
 #file-info > h4 {
   margin: 12px 0;
   font-size: 12px;
+  min-width: 80px;
 }
 
 .drag-area {
@@ -512,19 +513,19 @@ button h1 {
   font-size: 14px;
 }
 
-.action-button button#Playlist_0 {
+.action-button button#playlist-0 {
   border: transparent solid 1px;
   padding: 0 10px;
   width: max-content;
 }
 
-.action-button button#Playlist_0.enabled {
+.action-button button#playlist-0.enabled {
   border: #eee solid 2px;
   padding: 0 9px;
   width: calc(max-content + 1px);
 }
 
-.action-button button#Playlist_0:hover {
+.action-button button#playlist-0:hover {
   border: white solid 1px;
   padding: 0 10px;
   width: max-content;
@@ -543,7 +544,7 @@ button.enabled {
   border: #eee solid 2px;
 }
 
-#exit-button {
+#exit-app {
   height: 26px;
   width: 26px;
   border-radius: 13px;
@@ -553,14 +554,14 @@ button.enabled {
   padding-top: 5px;
 }
 
-#exit-button > h2 {
+#exit-app > h2 {
   font-size: 22px;
   font-weight: bold;
   margin-left: 0px;
   margin-top: -4px;
 }
 
-#exit-button:hover {
+#exit-app:hover {
   cursor: default;
   background: #aaa3;
   border: none;
