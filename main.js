@@ -7,9 +7,9 @@ const fs = require('fs-extra')
 contextMenu({
     prepend: (defaultActions, params, browserWindow) => [
         {
-            label: 'Rainbow',
+            // label: 'Rainbow',
             // Only show it when right-clicking images
-            visible: params.mediaType === 'image'
+            // visible: params.mediaType === 'image'
         }
     ]
 });
@@ -28,7 +28,7 @@ function createWindow () {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true
+      enableRemoteModule: true // why is this needed again?
     }
   })
 
@@ -54,9 +54,9 @@ function createWindow () {
 
   mainWindow.autoHideMenuBar = true;
   mainWindow.setMinimumSize(596, 596);
-  Menu.setApplicationMenu(null)
+  Menu.setApplicationMenu(null);
   // and load the index.html of the app.
-  mainWindow.loadFile('app/music.html')
+  mainWindow.loadFile('app/music.html');
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 }
