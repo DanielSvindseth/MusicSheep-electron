@@ -1,5 +1,4 @@
-function id(id) {
-  return document.getElementById(id); }
+function id(id) { return document.getElementById(id); } // Make accessing HTML elements more convenient
 
 const fs = require('fs-extra');
 const {app, globalshortcut, ipcRenderer, dialog} = require('electron');
@@ -166,7 +165,9 @@ function prevSong() {
 function nextSong() {
   w = parseInt(localStorage.getItem('w'));
   //console.log('First number was ' + currentSong);
-  id(currentSong).classList.remove('active-playing');
+  if (currentSong) {
+    id(currentSong).classList.remove('active-playing'); // throws error if switching playlist while playing
+  }
   if (currentSong == w - 1) {
     currentSong = 1; } else {
     currentSong ++; }
@@ -200,17 +201,23 @@ function updateSeeker() {
       m = Math.round( s / 60 ); // time in minutes
       s = ( s % 60 );
       h = Math.round( m / 60 ); // time in hours
-      m = ( m % 60 );
+      // m = ( m % 60 ); uncomment to convert minutes to hours
 
       // seekometer.innerHTML = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); // hh:mm:ss
       seekometer.innerHTML = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); // mm:ss
-      if (v == e && e != 0 && localStorage.getItem('AutoPlay') == 'yes') {
-        nextSong(); // Something is weird here
-        console.log('playing next song'); }
+      // if (v == e && e != 0 && localStorage.getItem('AutoPlay') == 'yes') {
+      //   nextSong(); // Something is weird here
+      //   console.log('playing next song'); }
       } }
   setInterval(update, 1);
   // if (audio && localStorage.getItem('AutoPlay') == 'yes') { audio.on('end'), function () { nextSong(); console.log('song ended'); } }
+if (audio) {
+  audio.on('end', () => {
+    nextSong();
+    console.log("audio.on('end') triggered. Playing next song"); } ); }
 }
+
+
 
 function initSeeker() {
   seeker = id('seeker');
@@ -223,7 +230,7 @@ function initSeeker() {
   m = Math.round( s / 60 ); // time in minutes
   s = ( s % 60 );
   h = Math.round( m / 60 ); // time in hours
-  m = ( m % 60 );
+  // m = ( m % 60 );
 
   id('song-duration').innerHTML = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'); // mm:ss
 }
