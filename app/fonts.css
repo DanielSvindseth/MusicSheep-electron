@@ -7,8 +7,3 @@
   font-family: 'Noto Emoji';
   src: url('../fonts/NotoEmoji/NotoEmoji-Regular.ttf') format('truetype');
 }
-
-@font-face {
-  font-family: 'Firefox Emoji';
-  src: url('../fonts/FirefoxEmoji/FirefoxEmoji.ttf') format('truetype');
-}

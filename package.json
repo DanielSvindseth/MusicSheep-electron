@@ -24,7 +24,6 @@
     "fs-extra": "^9.0.1",
     "howler": "^2.2.3",
     "mousetrap": "^1.6.5",
-    "ncu": "^0.2.1",
     "nth-check": "^2.0.1",
     "npm-check-updates": "^16.9.0",
     "requirejs": "^2.3.6"
