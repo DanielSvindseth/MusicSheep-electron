@@ -7,3 +7,18 @@
   font-family: 'Noto Emoji';
   src: url('../fonts/NotoEmoji/NotoEmoji-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Average Sans';
+  src: url('../fonts/Average_Sans/AverageSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/Open_Sans/static/OpenSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lexnd Deca';
+  src: url('../fonts/Lexend_Deca/static/LexendDeca-Regular.ttf') format('truetype');
+}

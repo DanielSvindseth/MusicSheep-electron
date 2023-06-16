@@ -7,8 +7,11 @@
   <link rel="stylesheet" href="fonts.css">
   <link rel="favicon icon" href="icon.png">
 </head>
-<body id="body" onload="listSongs();">
+<body id="body" onload="listSongs(); hideStartupScreen();">
   <!-- listSongs() is needed here to actually load the songs when the app loads -->
+  <!-- <div id="startup-screen">
+    <img src="icon.png" alt="Music Sheep">
+  </div> -->
   <div id="app-window">
     <div id="header">
       <div class="action-grp">

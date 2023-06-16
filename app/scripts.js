@@ -275,6 +275,7 @@ function toTime(i) {
 
 // Add eventListeners to app elements
 id('body').addEventListener("load", function() { loadTheme(); listSongs(); updateSeeker(); initEnabled(); })
+// id('body').addEventListener("load", function() { hideStartupScreen(); } );
 
 id('play-button').addEventListener("click", playButton);
 id('prev-button').addEventListener("click", prevSong);
@@ -533,6 +534,12 @@ function showBitrate(filetype, metadata) {
 function updateBitrate() {
   let bitrate = localStorage.getItem('bitrate') * speed;
   id('file-bitrate').innerHTML = bitrate.toFixed(2) + ' kbps'; }
+
+function hideStartupScreen() {
+  id('startup-screen').style.opacity = '0';
+  setTimeout( function() { id('startup-screen').style.display = 'none'; }, 400 );
+
+}
 
 function closeWindow() {
   window.close(); }
