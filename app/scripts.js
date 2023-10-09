@@ -2,6 +2,7 @@ function id(id) { return document.getElementById(id); } // Make accessing HTML e
 
 const fs = require('fs-extra');
 const {app, globalshortcut, ipcRenderer, dialog} = require('electron');
+// const { getCurrentWebContents, Menu, MenuItem } = require ('electron').remote;
 const Mousetrap = require('mousetrap');
 const { Howler } = require('howler');
 const { ExifTool } = require('exiftool-vendored');
@@ -29,6 +30,15 @@ var playlist_5 = "/5/";
 var playlist_6 = "/6/";
 
 const playlists = ['/', '/1/', '/2/', '/3/', '/4/', '/5/', '/6/']
+
+
+// let webContents = getCurrentWebContents ();
+// let rightClickPosition;
+// const contextMenu = new Menu();
+// const menuItem = new MenuItem({ label: 'Inspect Element', click: () => { webContents.inspectElement (rightClickPosition.x, rightClickPosition.y); }});
+// contextMenu.append (menuItem);
+// webContents.on('context-menu', (event, params) => { rightClickPosition = { x: params.x, y: params.y }; contextMenu.popup (); });
+
 
 // Send message to main process to get the string data
 ipcRenderer.send('get-data');

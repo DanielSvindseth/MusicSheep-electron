@@ -10,6 +10,14 @@ contextMenu({
             label: 'Menu', // this is needed, otherwise right-click won't work
             // Only show it when right-clicking images
             visible: params.mediaType === 'video'
+        },
+        {
+            label: "Developer",
+            submenu:
+          [
+            { role: 'reload' },
+            { role: 'toggledevtools' }
+          ]
         }
     ]
 });

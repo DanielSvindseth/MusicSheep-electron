@@ -1,5 +1,5 @@
 {
-  "name": "Music Sheep",
+  "name": "MusicSheep",
   "version": "0.9.0",
   "description": "A music player",
   "main": "main.js",
@@ -20,12 +20,12 @@
     "browser-window": "^0.4.0",
     "dmg": "^0.1.0",
     "electron-context-menu": "^2.0.1",
+    "howler": "2.2.3",
     "exiftool-vendored": "^22.0.0",
     "fs-extra": "^9.0.1",
-    "howler": "^2.2.3",
     "mousetrap": "^1.6.5",
-    "nth-check": "^2.0.1",
     "npm-check-updates": "^16.9.0",
+    "nth-check": "^2.0.1",
     "requirejs": "^2.3.6"
   },
   "scripts": {
