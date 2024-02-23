@@ -1,8 +1,15 @@
 // Modules to control application life and create native browser window
-const {app, Menu, BrowserWindow, globalshortcut, ipcMain, dialog} = require('electron')
+const {app, Menu, BrowserWindow, globalshortcut, ipcMain, dialog} = require('electron');
 const contextMenu = require('electron-context-menu');
-const path = require('path')
-const fs = require('fs-extra')
+const path = require('path');
+const fs = require('fs-extra');
+// const {app, globalshortcut, ipcRenderer, dialog} = require('electron');
+// const { getCurrentWebContents, Menu, MenuItem } = require ('electron').remote;
+const Mousetrap = require('mousetrap');
+// const { Howler } = require('howler');
+const { ExifTool } = require('exiftool-vendored');
+const Exif = new ExifTool();
+// const jsmediatags = window.jsmediatags;
 
 contextMenu({
     prepend: (defaultActions, params, browserWindow) => [

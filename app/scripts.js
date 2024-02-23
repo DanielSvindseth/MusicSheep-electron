@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const {app, globalshortcut, ipcRenderer, dialog} = require('electron');
 // const { getCurrentWebContents, Menu, MenuItem } = require ('electron').remote;
 const Mousetrap = require('mousetrap');
-const { Howler } = require('howler');
+// const { Howler } = require('howler');
 const { ExifTool } = require('exiftool-vendored');
 const Exif = new ExifTool();
 // const jsmediatags = window.jsmediatags;
@@ -476,7 +476,7 @@ function switchTheme() {
   var r = document.querySelector(':root');
   theme = getComputedStyle(r).getPropertyValue('--backdrop');
   console.log(theme);
-  if (theme == 'url("./backdrops/color_gradients.png")') {
+  if (theme == "url('./backdrops/color_gradients.png')") {
     localStorage.setItem('theme', '2');
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients_2.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients_2.png')");
