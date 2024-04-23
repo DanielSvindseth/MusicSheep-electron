@@ -1,9 +1,10 @@
 {
   "name": "MusicSheep",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Music",
   "main": "main.js",
   "repository": "",
+  "homepage": "https://github.com/DanielSvindseth/MusicSheep-electron/tree/main",
   "keywords": [
     "sheep",
     "music",
@@ -12,7 +13,7 @@
   "author": "Daniel Svindseth",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^28.1.4",
+    "electron": "^29.0.1",
     "electron-builder": "^24.9.1",
     "electron-packager": "^17.1.1"
   },
@@ -20,7 +21,6 @@
     "browser-window": "^0.4.0",
     "dmg": "^0.1.0",
     "electron-context-menu": "^2.0.1",
-    "electron-forge": "^5.2.4",
     "exiftool-vendored": "^24.0.0",
     "fs-extra": "^9.0.1",
     "mousetrap": "^1.6.5",
@@ -29,7 +29,7 @@
     "requirejs": "^2.3.6"
   },
   "scripts": {
-    "start": "electron --enable-transparent-visuals .",
+    "start": "electron --enable-transparent-visuals --enable-features=UseOzonePlatform --ozone-platform-hint=auto .",
     "pack": "electron-builder --dir",
     "dist-noasar": "electron-builder --linux --config.asar=false",
     "dist": "electron-builder --linux",
@@ -47,7 +47,10 @@
       "target": "dmg"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "maintainer": "Daniel Svindseth",
+      "category": "AudioVideo",
+      "icon": "1024x1024.png"
     },
     "win": {
       "target": [

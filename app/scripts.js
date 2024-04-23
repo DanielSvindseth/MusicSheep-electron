@@ -110,13 +110,13 @@ const setSrc = async (number) => {
   audio = new Howl({ src: [song], rate:speed}); //added html5:true to better handle large files // MASSIVE speedup for long tracks //nvm this breaks pitch change *sigh* //WHY do people prefer terrible audio quality with preserved pitch over normal rate changes?????
   currentSong = number;
   filetype = id(number).getAttribute('filetype');
-  const metadata = await Exif.read(song);
-  console.log(metadata);
+  // const metadata = await Exif.read(song);
+  // console.log(metadata);
 
   id('now-playing').innerHTML = songName; // mark active track with css
   id(number).className += ' active-playing';
   setEmblem(filetype);
-  showBitrate(filetype, metadata);
+  // showBitrate(filetype, metadata);
   // playButton();
   //setTimeout(() => {initSeeker();}, 2000); } //Removed in favour of audio.once
   audio.once('load', function() {
@@ -545,11 +545,11 @@ function updateBitrate() {
   let bitrate = localStorage.getItem('bitrate') * speed;
   id('file-bitrate').innerHTML = bitrate.toFixed(2) + ' kbps'; }
 
-function hideStartupScreen() {
-  id('startup-screen').style.opacity = '0';
-  setTimeout( function() { id('startup-screen').style.display = 'none'; }, 400 );
-
-}
+// function hideStartupScreen() {
+//   id('startup-screen').style.opacity = '0';
+//   setTimeout( function() { id('startup-screen').style.display = 'none'; }, 400 );
+//
+// }
 
 function closeWindow() {
   window.close(); }
