@@ -87,6 +87,7 @@ html::-webkit-scrollbar-thumb {
   display: grid;
   grid-template:  "header" 46px
                   "sub-header" 40px
+                  "search-bar" 0
                   "main" auto
                   "footer" 100px / auto;
 }
@@ -628,4 +629,34 @@ button.enabled {
 
 #pause-button-icon {
   margin-left: 0px;
+}
+
+#search-bar {
+  grid-area: search-bar;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  background-image: var(--backdrop);
+  background-position: top;
+}
+
+#search-bar > input[type="text"] {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border: 0;
+  height: 36px;
+  margin-right: 0;
+  padding-left: 12px;
+}
+
+#search-bar > div {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+#search-bar > div > button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
 }

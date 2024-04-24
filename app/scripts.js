@@ -303,8 +303,12 @@ id('playlist-4').addEventListener("click", function() { setPlaylist(4); });
 id('playlist-5').addEventListener("click", function() { setPlaylist(5); });
 id('playlist-6').addEventListener("click", function() { setPlaylist(6); });
 
+id('search').addEventListener("click", function() { toggleSearch(); });
 id('toggle-auto-play').addEventListener("click", toggleAutoPlay);
 id('new-folder').addEventListener("click", setNewFolder);
+
+id('search-string').addEventListener("keyup", ({key}) => { if (key === "Enter") { filterSongs(id('search-string').value); }})
+id('commit-search').addEventListener("click", function() { filterSongs(id('search-string').value); });
 
 
 // Add keypress functions
@@ -402,7 +406,7 @@ ipcRenderer.on('response-folder', (event, argFilePaths, argCanceled) => {
 
 
 // List all files in variable 'folder' and make buttons for them
-function listSongs() {
+function listSongs(filter) {
   console.log("Starting to list files in directory " + folder);
   let output = id("listing");
   let fileName;
@@ -422,8 +426,8 @@ function listSongs() {
         var fileType = file.slice(-4);
       } else {
         console.warn(file + ' might not be a supported file! File extension not 3 or 4 characters long! Skipping…'); }
-
-      if (fileType == 'mp3' || fileType == 'm4a' || fileType == 'wav' || fileType == 'flac' || fileType == 'ogg' || fileType == 'aac' || fileType == 'mp4' || fileType == 'opus' || fileType == 'aiff') {
+      if ((file.includes(filter) == true && fileType == 'mp3') || (file.includes(filter) == true && fileType == 'm4a') || (file.includes(filter) == true && fileType == 'wav') || (file.includes(filter) == true && fileType == 'flac') || (file.includes(filter) == true && fileType == 'ogg') || (file.includes(filter) == true && fileType == 'aac') || (file.includes(filter) == true && fileType == 'mp4') || (file.includes(filter) == true && fileType == 'opus') || (file.includes(filter) == true && fileType == 'aiff')) {
+        console.log('hi');
         let item = document.createElement("li");
         let button = document.createElement("button");
         button.setAttribute('number', w);
@@ -438,14 +442,24 @@ function listSongs() {
         button.setAttribute('filetype', fileType);
         output.appendChild(item);
         w++;
-        localStorage.setItem('w', w); } }); });
-  console.log("Finished listing files"); }
+        localStorage.setItem('w', w);
+      }
+    });
+  });
+  console.log("Finished listing files");
+}
 
 // Refresh the files -without refreshing the whole application
 function refreshSongs() {
   let output = id("listing");
   listing.innerHTML = '';
-  listSongs(); }
+  listSongs(''); }
+
+function filterSongs(filter) {
+  let output = id("listing");
+  listing.innerHTML = '';
+  listSongs(filter);
+}
 
 function refreshApp() {
   window.location.reload(true); }
@@ -481,7 +495,7 @@ function switchTheme() {
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients_2.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients_2.png')");
     r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients_2.png')"); }
-  else if (theme == 'url("./backdrops/color_gradients_2.png")') {
+  else if (theme == "url('./backdrops/color_gradients_2.png')") {
     localStorage.setItem('theme', '3');
     r.style.setProperty('--backdrop', "url('./backdrops/color_gradients_3.png')");
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients_3.png')");
@@ -492,6 +506,24 @@ function switchTheme() {
     r.style.setProperty('--backdrop-dark', "linear-gradient(#0002, #0002), url('./backdrops/color_gradients.png')");
     r.style.setProperty('--backdrop-darker', "linear-gradient(#0004, #0004), url('./backdrops/color_gradients.png')"); }
   console.log('Changed theme!'); }
+
+function toggleSearch() {
+  let e = id('app-window');
+  if (localStorage.getItem('search-visible') == 'false') {
+    e.style.gridTemplate = '"header" 46px "sub-header" 40px "search-bar" 40px "main" auto "footer" 100px / auto';
+    id('commit-search').style.display = 'block';
+    localStorage.setItem('search-visible', 'true'); }
+  else if (localStorage.getItem('search-visible') == 'true') {
+    e.style.gridTemplate = '"header" 46px "sub-header" 40px "search-bar" 0 "main" auto "footer" 100px / auto';
+    id('commit-search').style.display = 'none';
+    localStorage.setItem('search-visible', 'false'); }
+  else {
+    e.style.gridTemplate = '"header" 46px "sub-header" 40px "search-bar" 40px "main" auto "footer" 100px / auto';
+    id('commit-search').style.display = 'block';
+    localStorage.setItem('search-visible', 'true'); }
+
+  console.log('toggleSearch');
+}
 
 function setFolder() {
   var input = id('custom-folder-input').value;

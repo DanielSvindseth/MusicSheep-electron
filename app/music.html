@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="fonts.css">
   <link rel="favicon icon" href="icon.png">
 </head>
-<body id="body" onload="listSongs();">
+<body id="body" onload="refreshSongs();">
   <!-- listSongs() is needed here to actually load the songs when the app loads -->
   <!-- <div id="startup-screen">
     <img src="icon.png" alt="Music Sheep">
@@ -54,6 +54,9 @@
       <div class="action-grp">
 
         <div class="action-button">
+          <button id="search"><img src="icons/symbolic/loupe-large-symbolic.svg"><img></button>
+        </div>
+        <div class="action-button">
           <button id="toggle-auto-play"><img src="icons/symbolic/media-playlist-consecutive-symbolic.svg"><img></button>
         </div>
         <div class="action-button">
@@ -72,6 +75,13 @@
         </div>
       </div>
       <h3 id="now-playing"></h3>
+    </div>
+
+    <div id="search-bar">
+      <input id="search-string" type="text" name="Search..." value="">
+      <div class="action-button">
+        <button id="commit-search" style="display: none;"><img src="icons/symbolic/loupe-large-symbolic.svg"><img></button>
+      </div>
     </div>
 
     <div id="main">
