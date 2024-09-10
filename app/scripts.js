@@ -29,8 +29,8 @@ var playlist_4 = "/4/";
 var playlist_5 = "/5/";
 var playlist_6 = "/6/";
 
-const playlists = ['/', '/1/', '/2/', '/3/', '/4/', '/5/', '/6/']
-
+const playlists = ['/', '/1/', '/2/', '/3/', '/4/', '/5/', '/6/'];
+const songs = [];
 
 // let webContents = getCurrentWebContents ();
 // let rightClickPosition;
@@ -105,11 +105,16 @@ const setSrc = async (number) => {
   if (id(currentSong)) {
     id(currentSong).classList.remove('active-playing'); }
 
-  song = id(number).getAttribute('path');
-  songName = id(number).getAttribute('fileName');
-  audio = new Howl({ src: [song], rate:speed}); //added html5:true to better handle large files // MASSIVE speedup for long tracks //nvm this breaks pitch change *sigh* //WHY do people prefer terrible audio quality with preserved pitch over normal rate changes?????
-  currentSong = number;
-  filetype = id(number).getAttribute('filetype');
+  song = songs[s]
+
+  // song = id(number).getAttribute('path');
+  // songName = id(number).getAttribute('fileName');
+  // audio = new Howl({ src: [song], rate:speed}); //added html5:true to better handle large files // MASSIVE speedup for long tracks //nvm this breaks pitch change *sigh* //WHY do people prefer terrible audio quality with preserved pitch over normal rate changes?????
+  // currentSong = number;
+  // filetype = id(number).getAttribute('filetype');
+
+
+
   // const metadata = await Exif.read(song);
   // console.log(metadata);
 
@@ -165,8 +170,8 @@ function stopSong() {
     id('now-playing').innerHTML = '';
     id('seeker').value = 0;
     id('seeker').max = 0;
-    id('song-duration').innerHTML = '0';
-    id('seekometer').innerHTML = '0'; } }
+    id('song-duration').innerHTML = '00:00';
+    id('seekometer').innerHTML = '00:00'; } }
 
 
 // Previous Song
@@ -185,12 +190,12 @@ function prevSong() {
 
 // Next Song
 function nextSong() {
-  w = parseInt(localStorage.getItem('w'));
+  // w = parseInt(localStorage.getItem('w'));
   //console.log('First number was ' + currentSong);
   if (currentSong) {
     id(currentSong).classList.remove('active-playing'); // throws error if switching playlist while playing
   }
-  if (currentSong == w - 1) {
+  if (currentSong == songs[-1]) {
     currentSong = 1; } else {
     currentSong ++; }
   //console.log('New number is ' + currentSong);
@@ -303,6 +308,7 @@ id('playlist-4').addEventListener("click", function() { setPlaylist(4); });
 id('playlist-5').addEventListener("click", function() { setPlaylist(5); });
 id('playlist-6').addEventListener("click", function() { setPlaylist(6); });
 
+id('shuffle').addEventListener("click", function() { shuffleSongs(); });
 id('search').addEventListener("click", function() { toggleSearch(); });
 id('toggle-auto-play').addEventListener("click", toggleAutoPlay);
 id('new-folder').addEventListener("click", setNewFolder);
@@ -406,10 +412,12 @@ ipcRenderer.on('response-folder', (event, argFilePaths, argCanceled) => {
 
 
 // List all files in variable 'folder' and make buttons for them
-function listSongs(filter) {
+function listSongs(filter, shuffle) {
   console.log("Starting to list files in directory " + folder);
   let output = id("listing");
   let fileName;
+  output.innerHTML = '';
+  songs.length = 0;
 
   fs.readdir(folder, function(err, files) {
     if (err) {
@@ -440,25 +448,35 @@ function listSongs(filter) {
         button.setAttribute('short-path', file);
         button.setAttribute('fileName', fileName);
         button.setAttribute('filetype', fileType);
-        output.appendChild(item);
+        // output.appendChild(item); // deprecated. Using arrays instead
         w++;
         localStorage.setItem('w', w);
+        songs.push(item);
       }
-    });
+    }); // finished files.forEach
+    if (shuffle == true) {
+      songs.sort( function() { return 0.5 - Math.random(); } );
+    }
+    for (let i = 0; i < songs.length; i++) {
+      output.appendChild(songs[i]);
+    }
   });
   console.log("Finished listing files");
 }
 
 // Refresh the files -without refreshing the whole application
 function refreshSongs() {
-  let output = id("listing");
-  listing.innerHTML = '';
-  listSongs(''); }
+  listSongs('', false); }
 
 function filterSongs(filter) {
+  listSongs(filter, false);
+}
+
+function shuffleSongs() {
   let output = id("listing");
-  listing.innerHTML = '';
-  listSongs(filter);
+  let amount = output.children.length;
+  console.log("There are " + amount + " elements in the list");
+  listSongs('', true);
 }
 
 function refreshApp() {
