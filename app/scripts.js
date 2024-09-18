@@ -18,7 +18,6 @@ var vol = volumeChanger.value
 var playing = 0
 var currentSong
 var folder
-localStorage.setItem('currentSong', '1')
 
 // 7 Playlists
 var playlist_0 = "/"
@@ -174,30 +173,24 @@ function stopSong() {
 
 // Previous Song
 function prev() {
-  w = parseInt(localStorage.getItem('w'))
-  //console.log('First number was ' + currentSong)
-  id(currentSong).classList.remove('active-playing')
-  if (currentSong == 1) {
-    currentSong = w - 1 } else {
-    currentSong -- }
-  //console.log('New number is ' + currentSong)
-  id(currentSong).className += ' active-playing'
-  localStorage.setItem('currentSong', currentSong)
-  let song = id(currentSong).getAttribute('path')
-  setSrc('this', currentSong) }
+  if (currentSong) {
+    currentSong.classList.remove('active-playing') }
+
+  if (currentSong == songs[0].children[0]) {
+    nextSong = songs[1].children[0] }
+  else {
+    nextSong = songs[(parseInt(currentSong.getAttribute('id')) - 1)].children[0] }
+
+  setSrc(nextSong, nextSong.getAttribute('id')) }
 
 // Next Song
 function next() {
   if (currentSong) {
     currentSong.classList.remove('active-playing') }
-
-  if (currentSong == songs[-1]) {
+  if (currentSong == songs[(parseInt(songs.length) - 1)].children[0]) {
     nextSong = songs[0].children[0] }
   else {
     nextSong = songs[(parseInt(currentSong.getAttribute('id')) + 1)].children[0] }
-
-  // currentSong.className += ' active-playing'
-  // localStorage.setItem('currentSong', currentSong)
 
   setSrc(nextSong, nextSong.getAttribute('id')) }
 
